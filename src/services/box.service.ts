@@ -70,7 +70,7 @@ class boxService {
 
         console.log(req.file,"req.file")
     
-        var filePath = path.join(__dirname, '../../temp/',req.file.filename);
+        var filePath = path.join(__dirname, '../../../temp/',req.file.filename);
         console.log({filePath});
         var fileData = fs.createReadStream(filePath);
         // console.log(client)

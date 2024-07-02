@@ -66,7 +66,7 @@ class boxService {
     uploadFileBox(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             console.log(req.file, "req.file");
-            var filePath = path_1.default.join(__dirname, '../../temp/', req.file.filename);
+            var filePath = path_1.default.join(__dirname, '../../../temp/', req.file.filename);
             console.log({ filePath });
             var fileData = fs_1.default.createReadStream(filePath);
             // console.log(client)
