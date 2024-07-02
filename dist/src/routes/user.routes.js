@@ -34,6 +34,7 @@ exports.userRoutes = [
     router.get('/pdfList', controllers.user.PdfController.pdfList),
     router.get('/getpdfDetails/:id', validations.user.getPdfData, validations_error_middleware_1.errorResponse, controllers.user.PdfController.getPdfDetails),
     router.post('/pdfDelete', controllers.user.PdfController.pdfDelete),
-    // router.post('/processPdf',controllers.user.PdfController.processPdf),
+    router.post('/processPdf', controllers.user.PdfController.processPdf),
+    router.post('/askQuestion', controllers.user.PdfController.askQuestion),
 ];
 //# sourceMappingURL=user.routes.js.map

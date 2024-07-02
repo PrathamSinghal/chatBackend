@@ -17,5 +17,6 @@ export  const userRoutes = [
     router.post('/pdfDelete',controllers.user.PdfController.pdfDelete),
 
 
-    // router.post('/processPdf',controllers.user.PdfController.processPdf),
+    router.post('/processPdf',controllers.user.PdfController.processPdf),
+    router.post('/askQuestion',controllers.user.PdfController.askQuestion),
 ];

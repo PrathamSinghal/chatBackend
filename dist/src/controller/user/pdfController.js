@@ -39,6 +39,7 @@ exports.PdfController = void 0;
 const mongoose_1 = __importDefault(require("mongoose"));
 const dotenv = __importStar(require("dotenv"));
 dotenv.config();
+const axios_1 = __importDefault(require("axios"));
 const responseMessage_1 = require("../../utils/responseMessage");
 const _httpStatus_1 = require("../../utils/_httpStatus");
 const pdf_service_1 = require("../../services/pdf.service");
@@ -100,6 +101,69 @@ class pdfController {
                 };
                 return res.status(_httpStatus_1._httpStatusService.status.OK)
                     .json(obj);
+            }
+            catch (error) {
+                return res.status(_httpStatus_1._httpStatusService.status.serverError)
+                    .json(responseMessage_1.resObj.error(error));
+            }
+        });
+    }
+    processPdf(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                // "url": "https://app.box.com/shared/static/xb03u32krysahuilj0kdf4yho4cn0ca6.pdf"
+                let data = JSON.stringify({
+                    "url": req.body.url
+                });
+                let config = {
+                    method: 'post',
+                    maxBodyLength: Infinity,
+                    url: 'http://127.0.0.1:4002/process_pdf',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    data: data
+                };
+                yield axios_1.default.request(config)
+                    .then((response) => {
+                    return res.status(200).json(response.data);
+                })
+                    .catch((error) => {
+                    console.log(error);
+                    return res.status(400).json({ error });
+                });
+            }
+            catch (error) {
+                return res.status(_httpStatus_1._httpStatusService.status.serverError)
+                    .json(responseMessage_1.resObj.error(error));
+            }
+        });
+    }
+    askQuestion(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                // "url": "https://app.box.com/shared/static/xb03u32krysahuilj0kdf4yho4cn0ca6.pdf"
+                let data = JSON.stringify({
+                    "question": req.body.question
+                });
+                let config = {
+                    method: 'post',
+                    maxBodyLength: Infinity,
+                    url: 'http://127.0.0.1:4002/ask_question',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    data: data
+                };
+                yield axios_1.default.request(config)
+                    .then((response) => {
+                    console.log(response.data);
+                    return res.status(200).json(response.data);
+                })
+                    .catch((error) => {
+                    console.log(error);
+                    return res.status(400).json({ error });
+                });
             }
             catch (error) {
                 return res.status(_httpStatus_1._httpStatusService.status.serverError)
