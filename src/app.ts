@@ -90,7 +90,7 @@ class Application {
         
         this._instance.use('*', (req, res) => {
             console.log("ismeaaya2");
-            console.log(path.join(__dirname, '..', '..', '..', 'Web-Scraper'),"path.joi");
+            console.log(path.join(__dirname, '..', '..', '..', 'chatFrontend'),"path.joi");
             console.log(req,"request")
             console.log(req.url,"requesturl")
             console.log(req.baseUrl,"baseUrl")
@@ -101,9 +101,9 @@ class Application {
 
                 console.log(url,"finalurl")
 
-                res.sendFile(path.resolve(path.join(__dirname, '..', '..', '..', 'Web-Scraper', 'build', url)));
+                res.sendFile(path.resolve(path.join(__dirname, '..', '..', '..', 'chatFrontend', 'build', url)));
             } else
-                res.sendFile(path.resolve(path.join(__dirname, '..', '..', '..', 'Web-Scraper', 'build', 'index.html')));
+                res.sendFile(path.resolve(path.join(__dirname, '..', '..', '..', 'chatFrontend', 'build', 'index.html')));
 
 
         })
