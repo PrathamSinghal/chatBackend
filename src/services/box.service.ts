@@ -101,7 +101,7 @@ class boxService {
                     // }
 
                     let pdfData = {
-                        name: file.name,
+                        name: req.file.originalname,
                         size: file.size,
                         sharedUrl: file?.shared_link?.url,
                         downloadUrl: file?.shared_link?.download_url,

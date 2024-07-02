@@ -97,7 +97,7 @@ class boxService {
                         //     ...getFileExchangeTokenData
                         // }
                         let pdfData = {
-                            name: file.name,
+                            name: req.file.originalname,
                             size: file.size,
                             sharedUrl: (_a = file === null || file === void 0 ? void 0 : file.shared_link) === null || _a === void 0 ? void 0 : _a.url,
                             downloadUrl: (_b = file === null || file === void 0 ? void 0 : file.shared_link) === null || _b === void 0 ? void 0 : _b.download_url,
