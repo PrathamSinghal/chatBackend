@@ -126,7 +126,7 @@ class Application {
             console.log(req.url, "requesturl");
             console.log(req.baseUrl, "baseUrl");
             if (allowedExt.filter(ext => req.baseUrl.indexOf(ext) > 0).length > 0) {
-                let url = (req.baseUrl).replace('/websiteDetails', '');
+                let url = (req.baseUrl).replace('/pdfDetails', '');
                 console.log(req.baseUrl, "baseUrl1");
                 console.log(url, "finalurl");
                 res.sendFile(path_1.default.resolve(path_1.default.join(__dirname, '..', '..', '..', 'chatFrontend', 'build', url)));
