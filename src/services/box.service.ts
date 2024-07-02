@@ -1,0 +1,125 @@
+import mongoose from 'mongoose';
+import * as db from '../model/_index';
+import fs from "fs";
+import path from "path";
+import { PdfService } from "./pdf.service";
+
+import BoxSDK from "box-node-sdk";
+// import { environment } from '../../environment';
+
+
+let BOX_APP_SETTINGS = {
+    "clientID": process.env.clientID,
+    "clientSecret": process.env.clientSecret,
+    "appAuth": {
+        "keyID": process.env.keyID,
+        "privateKey": process.env.privateKey,
+        "passphrase": process.env.passphrase
+    }
+}
+
+var sdk = new BoxSDK(BOX_APP_SETTINGS);
+var client = sdk.getAppAuthClient('enterprise', process.env.Enterprise_ID_JWT);
+
+const getFileExchangeToken = async (fileId:any) => {
+    console.log(fileId,"fileId")
+    return await client.exchangeToken('item_preview', `https://api.box.com/2.0/files/${fileId}`)
+    .then(tokenInfo => {
+        return tokenInfo;
+        // tokenInfo.accessToken contains the new downscoped access token
+    }).catch(function (error) {
+        return error
+      });
+}
+
+class boxService {
+    constructor() {
+
+    }
+
+    async getFileFolderToken(fileId,folderId) {
+
+        return await client.exchangeToken('item_preview', `https://api.box.com/2.0/files/${fileId}`)
+        .then(async tokenInfo => {
+            return await client.exchangeToken([
+                'item_preview',
+                'item_upload', 'item_delete','item_download','item_rename','item_share',
+                'base_explorer',
+                'root_readwrite'
+            ], `https://api.box.com/2.0/folders/${folderId}`)
+            .then(tokenInfoFolder => {
+    
+                let dataToReturn = {
+                    fileAccessData: {
+                        ...tokenInfo
+                    },
+                    folderAccessData: {
+                        ...tokenInfoFolder
+                    }
+                }
+                return dataToReturn;
+            }).catch(function (error) {
+                return ""
+            });
+            
+        }).catch(function (error) {
+            return ""
+        });
+    
+    
+    }
+
+    async uploadFileBox(req, res) {
+
+        console.log(req.file,"req.file")
+    
+        var filePath = path.join(__dirname, '../../temp/',req.file.filename);
+        console.log({filePath});
+        var fileData = fs.createReadStream(filePath);
+        client.files.uploadFile(req.body.fileFolder, req.file.filename, fileData, function(err, file) {
+            if (err){
+                fs.unlinkSync(filePath);
+                return res.status(400).json({message:err})
+            }
+            else{
+                client.files.update(file.entries[0].id, {
+                    shared_link: {
+                        access: "open",
+                        permissions: {
+                            can_view: true,
+                            can_download: true,
+                            can_edit: true
+                        }
+                    }
+                }).then(async file => {
+                    fs.unlinkSync(filePath);
+                    console.log({file});
+                    console.log(file.id,"fileidd");
+                    // let getFileExchangeTokenData = await getFileExchangeToken(file.id);
+                    // let datPush = {
+                    //     ...file,
+                    //     ...getFileExchangeTokenData
+                    // }
+
+                    let pdfData = {
+                        name: file.name,
+                        size: file.size,
+                        sharedUrl: file?.shared_link?.url,
+                        downloadUrl: file?.shared_link?.download_url,
+                        boxFileId: file?.id,
+                        parentFolder: file?.parent?.id
+                    }
+            
+                    let pdfSavedData = await PdfService.create(pdfData);
+    
+                    return res.status(200).json({message: "success", data: pdfSavedData})
+                })
+    
+            }
+        });
+    }
+
+}
+
+
+export const BoxService = new boxService();
