@@ -18,14 +18,11 @@ const path_1 = __importDefault(require("path"));
 const pdf_service_1 = require("./pdf.service");
 const box_node_sdk_1 = __importDefault(require("box-node-sdk"));
 // import { environment } from '../../environment';
+const box_json_1 = __importDefault(require("../../box.json"));
 let BOX_APP_SETTINGS = {
-    "clientID": process.env.clientID,
-    "clientSecret": process.env.clientSecret,
-    "appAuth": {
-        "keyID": process.env.keyID,
-        "privateKey": process.env.privateKey,
-        "passphrase": process.env.passphrase
-    }
+    "clientID": box_json_1.default.clientID,
+    "clientSecret": box_json_1.default.clientSecret,
+    "appAuth": box_json_1.default.appAuth
 };
 var sdk = new box_node_sdk_1.default(BOX_APP_SETTINGS);
 var client = sdk.getAppAuthClient('enterprise', process.env.Enterprise_ID_JWT);
@@ -72,8 +69,10 @@ class boxService {
             var filePath = path_1.default.join(__dirname, '../../temp/', req.file.filename);
             console.log({ filePath });
             var fileData = fs_1.default.createReadStream(filePath);
+            // console.log(client)
             client.files.uploadFile(req.body.fileFolder, req.file.filename, fileData, function (err, file) {
                 if (err) {
+                    console.log(err);
                     fs_1.default.unlinkSync(filePath);
                     return res.status(400).json({ message: err });
                 }

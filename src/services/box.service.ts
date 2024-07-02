@@ -6,16 +6,13 @@ import { PdfService } from "./pdf.service";
 
 import BoxSDK from "box-node-sdk";
 // import { environment } from '../../environment';
+import serviceAccount from '../../box.json';
 
 
 let BOX_APP_SETTINGS = {
-    "clientID": process.env.clientID,
-    "clientSecret": process.env.clientSecret,
-    "appAuth": {
-        "keyID": process.env.keyID,
-        "privateKey": process.env.privateKey,
-        "passphrase": process.env.passphrase
-    }
+    "clientID": serviceAccount.clientID,
+    "clientSecret": serviceAccount.clientSecret,
+    "appAuth": serviceAccount.appAuth
 }
 
 var sdk = new BoxSDK(BOX_APP_SETTINGS);
@@ -76,8 +73,10 @@ class boxService {
         var filePath = path.join(__dirname, '../../temp/',req.file.filename);
         console.log({filePath});
         var fileData = fs.createReadStream(filePath);
+        // console.log(client)
         client.files.uploadFile(req.body.fileFolder, req.file.filename, fileData, function(err, file) {
             if (err){
+                console.log(err);
                 fs.unlinkSync(filePath);
                 return res.status(400).json({message:err})
             }
