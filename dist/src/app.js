@@ -121,7 +121,7 @@ class Application {
         this._instance.use('/api/user/', user_routes_1.userRoutes);
         this._instance.use('*', (req, res) => {
             console.log("ismeaaya2");
-            console.log(path_1.default.join(__dirname, '..', '..', '..', 'Web-Scraper'), "path.joi");
+            console.log(path_1.default.join(__dirname, '..', '..', '..', 'chatFrontend'), "path.joi");
             console.log(req, "request");
             console.log(req.url, "requesturl");
             console.log(req.baseUrl, "baseUrl");
@@ -129,10 +129,10 @@ class Application {
                 let url = (req.baseUrl).replace('/websiteDetails', '');
                 console.log(req.baseUrl, "baseUrl1");
                 console.log(url, "finalurl");
-                res.sendFile(path_1.default.resolve(path_1.default.join(__dirname, '..', '..', '..', 'Web-Scraper', 'build', url)));
+                res.sendFile(path_1.default.resolve(path_1.default.join(__dirname, '..', '..', '..', 'chatFrontend', 'build', url)));
             }
             else
-                res.sendFile(path_1.default.resolve(path_1.default.join(__dirname, '..', '..', '..', 'Web-Scraper', 'build', 'index.html')));
+                res.sendFile(path_1.default.resolve(path_1.default.join(__dirname, '..', '..', '..', 'chatFrontend', 'build', 'index.html')));
         });
         this._instance.use(function (req, res, next) {
             // Website you wish to allow to connect
