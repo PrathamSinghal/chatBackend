@@ -7,7 +7,7 @@ import {Request,Response,NextFunction} from 'express'
 export const errorResponse = (req:Request,res:Response,next:NextFunction)=>{
     try {
         const errors = validationResult(req);
-        console.log(req.body,"???????????????? response")
+        // console.log(req.body,"???????????????? response")
         if(!errors.isEmpty()){
             return res.status(422).json({
                 status:422,

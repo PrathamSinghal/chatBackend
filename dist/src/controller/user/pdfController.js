@@ -113,12 +113,13 @@ class pdfController {
             try {
                 // "url": "https://app.box.com/shared/static/xb03u32krysahuilj0kdf4yho4cn0ca6.pdf"
                 let data = JSON.stringify({
-                    "url": req.body.url
+                    "url": req.body.url,
+                    "pdfId": req.body.pdfId
                 });
                 let config = {
                     method: 'post',
                     maxBodyLength: Infinity,
-                    url: 'http://127.0.0.1:4002/process_pdf',
+                    url: 'http://127.0.0.1:4005/process_pdf',
                     headers: {
                         'Content-Type': 'application/json'
                     },
@@ -144,12 +145,13 @@ class pdfController {
             try {
                 // "url": "https://app.box.com/shared/static/xb03u32krysahuilj0kdf4yho4cn0ca6.pdf"
                 let data = JSON.stringify({
-                    "question": req.body.question
+                    "question": req.body.question,
+                    pdfId: "1234"
                 });
                 let config = {
                     method: 'post',
                     maxBodyLength: Infinity,
-                    url: 'http://127.0.0.1:4002/ask_question',
+                    url: 'http://127.0.0.1:4005/ask_question',
                     headers: {
                         'Content-Type': 'application/json'
                     },
@@ -168,6 +170,56 @@ class pdfController {
             catch (error) {
                 return res.status(_httpStatus_1._httpStatusService.status.serverError)
                     .json(responseMessage_1.resObj.error(error));
+            }
+        });
+    }
+    askQuestionSocket(question, pdfId) {
+        var _a;
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                let data = JSON.stringify({
+                    "question": question,
+                    pdfId: pdfId
+                });
+                let config = {
+                    method: 'post',
+                    maxBodyLength: Infinity,
+                    url: 'http://127.0.0.1:4005/ask_question',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    data: data
+                };
+                const responseData = yield axios_1.default.request(config);
+                return (_a = responseData === null || responseData === void 0 ? void 0 : responseData.data) === null || _a === void 0 ? void 0 : _a.reply;
+            }
+            catch (error) {
+                return error.message;
+            }
+        });
+    }
+    processPdfSocket(url, pdfId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                // "url": "https://app.box.com/shared/static/xb03u32krysahuilj0kdf4yho4cn0ca6.pdf"
+                let data = JSON.stringify({
+                    "url": url,
+                    "pdfId": pdfId
+                });
+                let config = {
+                    method: 'post',
+                    maxBodyLength: Infinity,
+                    url: 'http://127.0.0.1:4005/process_pdf',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    data: data
+                };
+                const pdfUploadData = yield axios_1.default.request(config);
+                return pdfUploadData;
+            }
+            catch (error) {
+                return error.message;
             }
         });
     }

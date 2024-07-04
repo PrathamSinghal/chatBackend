@@ -19,6 +19,7 @@ const pdf_service_1 = require("./pdf.service");
 const box_node_sdk_1 = __importDefault(require("box-node-sdk"));
 // import { environment } from '../../environment';
 const box_json_1 = __importDefault(require("../../box.json"));
+const pdfController_1 = require("../controller/user/pdfController");
 let BOX_APP_SETTINGS = {
     "clientID": box_json_1.default.clientID,
     "clientSecret": box_json_1.default.clientSecret,
@@ -105,6 +106,7 @@ class boxService {
                             parentFolder: (_c = file === null || file === void 0 ? void 0 : file.parent) === null || _c === void 0 ? void 0 : _c.id
                         };
                         let pdfSavedData = yield pdf_service_1.PdfService.create(pdfData);
+                        yield pdfController_1.PdfController.processPdfSocket(pdfData === null || pdfData === void 0 ? void 0 : pdfData.downloadUrl, pdfData === null || pdfData === void 0 ? void 0 : pdfData.boxFileId);
                         return res.status(200).json({ message: "success", data: pdfSavedData });
                     }));
                 }

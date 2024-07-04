@@ -102,13 +102,14 @@ class pdfController {
             
             // "url": "https://app.box.com/shared/static/xb03u32krysahuilj0kdf4yho4cn0ca6.pdf"
             let data = JSON.stringify({
-                "url": req.body.url
+                "url": req.body.url,
+                "pdfId": req.body.pdfId
             });
 
             let config = {
                 method: 'post',
                 maxBodyLength: Infinity,
-                url: 'http://127.0.0.1:4002/process_pdf',
+                url: 'http://127.0.0.1:4005/process_pdf',
                 headers: { 
                     'Content-Type': 'application/json'
                 },
@@ -137,13 +138,14 @@ class pdfController {
             
             // "url": "https://app.box.com/shared/static/xb03u32krysahuilj0kdf4yho4cn0ca6.pdf"
             let data = JSON.stringify({
-                "question": req.body.question
+                "question": req.body.question,
+                pdfId: "1234"
             });
 
             let config = {
                 method: 'post',
                 maxBodyLength: Infinity,
-                url: 'http://127.0.0.1:4002/ask_question',
+                url: 'http://127.0.0.1:4005/ask_question',
                 headers: { 
                     'Content-Type': 'application/json'
                 },
@@ -153,6 +155,9 @@ class pdfController {
             await axios.request(config)
             .then((response) => {
                 console.log(response.data);
+
+                
+
                 return res.status(200).json(response.data);
             })
             .catch((error) => {
@@ -163,6 +168,63 @@ class pdfController {
         } catch (error) {
             return res.status(_httpStatusService.status.serverError)
             .json(resObj.error(error))
+        }
+
+    }
+
+    async askQuestionSocket(question?:any,pdfId?:any) {
+        try {
+            
+            let data = JSON.stringify({
+                "question": question,
+                pdfId: pdfId
+            });
+
+            let config = {
+                method: 'post',
+                maxBodyLength: Infinity,
+                url: 'http://127.0.0.1:4005/ask_question',
+                headers: { 
+                    'Content-Type': 'application/json'
+                },
+                data : data
+            };
+            
+
+            const responseData  = await axios.request(config);
+            return responseData?.data?.reply;
+
+        } catch (error) {
+            return error.message;
+        }
+
+    }
+
+    async processPdfSocket(url?:any,pdfId?:any) {
+
+        try {
+            
+            // "url": "https://app.box.com/shared/static/xb03u32krysahuilj0kdf4yho4cn0ca6.pdf"
+            let data = JSON.stringify({
+                "url": url,
+                "pdfId": pdfId
+            });
+
+            let config = {
+                method: 'post',
+                maxBodyLength: Infinity,
+                url: 'http://127.0.0.1:4005/process_pdf',
+                headers: { 
+                    'Content-Type': 'application/json'
+                },
+                data : data
+            };
+
+            const pdfUploadData =  await axios.request(config);
+            return pdfUploadData;
+
+        } catch (error) {
+            return error.message;
         }
 
     }

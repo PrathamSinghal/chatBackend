@@ -5,7 +5,7 @@ const express_validator_1 = require("express-validator");
 const errorResponse = (req, res, next) => {
     try {
         const errors = (0, express_validator_1.validationResult)(req);
-        console.log(req.body, "???????????????? response");
+        // console.log(req.body,"???????????????? response")
         if (!errors.isEmpty()) {
             return res.status(422).json({
                 status: 422,

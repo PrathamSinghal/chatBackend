@@ -73,8 +73,8 @@ class Application {
                     require(routePath).getRouter(app); // eslint-disable-line
                 });
                 app.get('*', (req, res) => {
-                    console.log(req, "ismeaaya1");
-                    console.log(req.url, "req.url");
+                    // console.log(req,"ismeaaya1")
+                    // console.log(req.url,"req.url")
                     if (allowedExt.filter(ext => req.url.indexOf(ext) > 0).length > 0) {
                         let url = (req.url.split('?')[0]).replace('/webPanel', '');
                         res.sendFile(path_1.default.resolve(path_1.default.join(__dirname, '..', '..', '..', 'Web-Scraper', 'build', url)));
@@ -96,6 +96,8 @@ class Application {
         //         status: 200
         //     })
         // })
+        // this._instance.use('/socket.io', (req: express.Request, res: express.Response) => {
+        // })
         // this._instance.post('/debug', (req: express.Request, res: express.Response) => {
         //     var cdr = req.body;
         //     console.log(cdr);
@@ -113,6 +115,41 @@ class Application {
         let upload = (0, multer_1.default)({
             storage: storage
         });
+        // this._instance.use(function (req, res, next) {
+        //     const http = require('http').Server(express());
+        //     const socketIO = require('socket.io')(http, {
+        //         cors: {
+        //             origin: [
+        //                 "http://localhost:3000",
+        //                 "http://localhost:3001",
+        //                 "http://localhost:3002",
+        //                 "http://localhost:4000",
+        //                 "http://localhost:5001"
+        //             ]
+        //         }
+        //     });
+        //     let users = []
+        //     socketIO.on('connection', (socket) => {
+        //         console.log(socket)
+        //         console.log(`⚡: ${socket.id} user just connected!`)  
+        //         socket.on("message", data => {
+        //           socketIO.emit("messageResponse", data)
+        //         })
+        //         socket.on("typing", data => (
+        //           socket.broadcast.emit("typingResponse", data)
+        //         ))
+        //         socket.on("newUser", data => {
+        //           users.push(data)
+        //           socketIO.emit("newUserResponse", users)
+        //         })
+        //         socket.on('disconnect', () => {
+        //           console.log('🔥: A user disconnected');
+        //           users = users.filter(user => user.socketID !== socket.id)
+        //           socketIO.emit("newUserResponse", users)
+        //           socket.disconnect()
+        //         });
+        //     });
+        // });
         this._instance.use('/apiDoc', express_1.default.static(path_1.default.resolve(__dirname, "doc/")));
         // this._instance.route('/fileUpload').post(multer({ dest: 'temp/', limits: { fieldSize: 8 * 1024 * 1024 } }).single('file'), fileUpdate);
         this._instance.route('/fileUploadBox').post(upload.single('file'), 
@@ -120,15 +157,15 @@ class Application {
         box_service_1.BoxService.uploadFileBox);
         this._instance.use('/api/user/', user_routes_1.userRoutes);
         this._instance.use('*', (req, res) => {
-            console.log("ismeaaya2");
-            console.log(path_1.default.join(__dirname, '..', '..', '..', 'chatFrontend'), "path.joi");
-            console.log(req, "request");
-            console.log(req.url, "requesturl");
-            console.log(req.baseUrl, "baseUrl");
+            // console.log("ismeaaya2");
+            // console.log(path.join(__dirname, '..', '..', '..', 'chatFrontend'),"path.joi");
+            // console.log(req,"request")
+            // console.log(req.url,"requesturl")
+            // console.log(req.baseUrl,"baseUrl")
             if (allowedExt.filter(ext => req.baseUrl.indexOf(ext) > 0).length > 0) {
                 let url = (req.baseUrl).replace('/pdfDetails', '');
-                console.log(req.baseUrl, "baseUrl1");
-                console.log(url, "finalurl");
+                // console.log(req.baseUrl,"baseUrl1")
+                // console.log(url,"finalurl")
                 res.sendFile(path_1.default.resolve(path_1.default.join(__dirname, '..', '..', '..', 'chatFrontend', 'build', url)));
             }
             else

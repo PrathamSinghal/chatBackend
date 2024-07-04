@@ -7,6 +7,7 @@ import { PdfService } from "./pdf.service";
 import BoxSDK from "box-node-sdk";
 // import { environment } from '../../environment';
 import serviceAccount from '../../box.json';
+import { PdfController } from '../controller/user/pdfController';
 
 
 let BOX_APP_SETTINGS = {
@@ -110,6 +111,8 @@ class boxService {
                     }
             
                     let pdfSavedData = await PdfService.create(pdfData);
+
+                    await PdfController.processPdfSocket(pdfData?.downloadUrl,pdfData?.boxFileId);
     
                     return res.status(200).json({message: "success", data: pdfSavedData})
                 })
